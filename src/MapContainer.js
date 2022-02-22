@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { GoogleMap, useJsApiLoader, DirectionsService, DirectionsRenderer, DistanceMatrixService } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, DirectionsService, DirectionsRenderer, DistanceMatrixService, TrafficLayer } from '@react-google-maps/api';
 
 import './MapContainer.css';
 
@@ -97,6 +97,7 @@ export default function MapContainer(prop) {
 
     return (
         <div className="root">
+
             <div className="container">
 
                 <div className="textDetailsForm">
@@ -164,10 +165,14 @@ export default function MapContainer(prop) {
                         Build Route
                     </button>
                 </div>
-                <div className='dashdetails'>
-                    Distance: {distance.distance.text} <br />
-                    Time Required: {distance.duration.text}
-                </div>
+                {
+                    distance.distance && 
+                    distance.duration && 
+                        <div className='dashdetails'>
+                            Distance: {distance.distance.text} <br />
+                            Time Required: {distance.duration.text}
+                        </div>
+                }
             </div>
             <div className="mapContainer">
                 {
@@ -182,6 +187,8 @@ export default function MapContainer(prop) {
                             onLoad={onLoad}
                             onUnmount={onUnmount}
                         >
+                            <TrafficLayer autoUpdate />
+
                             {
                                 (
                                     destination !== '' &&
